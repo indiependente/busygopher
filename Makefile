@@ -9,7 +9,7 @@ deps:
 	GO111MODULE=on go mod download
 
 build:
-	GO111MODULE=on go build .
+	GO111MODULE=on go build -o machine . 
 
 lint:
 	command -v golangci-lint || (cd /usr/local ; wget -O - -q https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s latest)
