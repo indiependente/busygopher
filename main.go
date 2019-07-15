@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 
 	"github.com/indiependente/busygopher/busygopher"
@@ -22,10 +23,8 @@ func main() {
 	}
 
 	for !bg.Halted {
-		log.Println(bg)
-		log.Println(tape)
+		fmt.Println(tape)
 		bg.Step()
 	}
-	log.Println(bg)
-	log.Println(tape)
+	fmt.Println(tape)
 }

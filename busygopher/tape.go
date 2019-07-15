@@ -1,8 +1,6 @@
 package busygopher
 
 import (
-	"strconv"
-
 	"github.com/pkg/errors"
 )
 
@@ -22,11 +20,11 @@ type StringTape struct {
 }
 
 func (st StringTape) String() string {
-	return st.data + "\n" + "head = " + strconv.Itoa(st.head)
+	return st.data
 }
 
 func NewStringTape() (*StringTape, error) {
-	data := "0000000000"
+	data := "0"
 	return &StringTape{
 		head: len(data) / 2,
 		data: data,
