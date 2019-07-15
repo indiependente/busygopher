@@ -1,36 +1,44 @@
 package busygopher
 
+const (
+	HALT = 'h'
+)
+
 // Op is an operation that the machine can perform.
 type Op struct {
-	Write int
-	Move  int
-	Stop  int
-	Next  int
+	Next  rune
+	Write rune
+	Move  rune
 }
 
 // Tape where the input
 type Tape interface {
-	ReadHead() int
-	WriteHead(int)
-	MoveHead(int)
+	ReadHead() rune
+	WriteHead(rune)
+	MoveHead(rune)
 }
 
 type Deck interface {
-	Card(int) [2]Op
+	Card(rune, rune) *Op
 }
 type BusyGopher struct {
 	Cards  Deck
 	Tape   Tape
-	State  int
+	State  rune
 	Halted bool
 }
 
-func (bg *BusyGopher) Step(c int) {
-	op := bg.Cards.Card(bg.State)[c]
-	if op.Stop == 1 {
-		return // halt
+func (bg *BusyGopher) Step() {
+	op := bg.Cards.Card(bg.State, bg.Tape.ReadHead())
+	if op.Next == HALT {
+		bg.Halted = true
+		return // stop execution
 	}
 	bg.Tape.WriteHead(op.Write)
 	bg.Tape.MoveHead(op.Move)
 	bg.State = op.Next
+}
+
+func (bg *BusyGopher) String() string {
+	return "state = " + string(bg.State)
 }

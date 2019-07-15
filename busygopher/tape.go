@@ -1,6 +1,8 @@
 package busygopher
 
 import (
+	"strconv"
+
 	"github.com/pkg/errors"
 )
 
@@ -19,6 +21,10 @@ type StringTape struct {
 	data string
 }
 
+func (st StringTape) String() string {
+	return st.data + "\n" + "head = " + strconv.Itoa(st.head)
+}
+
 func NewStringTape() (*StringTape, error) {
 	data := "0000000000"
 	return &StringTape{
@@ -27,17 +33,18 @@ func NewStringTape() (*StringTape, error) {
 	}, nil
 }
 
-func (st *StringTape) ReadHead() int {
-	return int(st.data[st.head])
+func (st *StringTape) ReadHead() rune {
+	return []rune(st.data)[st.head]
 }
 
-func (st *StringTape) WriteHead(c int) {
+func (st *StringTape) WriteHead(c rune) {
 	copy := []rune(st.data)
-	copy[st.head] = rune(c)
+	copy[st.head] = c
 	st.data = string(copy)
 }
-func (st *StringTape) MoveHead(c int) {
-	if c == 0 { // left
+
+func (st *StringTape) MoveHead(c rune) {
+	if c == '0' { // left
 		if st.head == 0 {
 			st.data = zeroes(st.data) + st.data
 			st.head = len(st.data)
@@ -45,7 +52,7 @@ func (st *StringTape) MoveHead(c int) {
 		st.head--
 		return
 	}
-	if c == 1 { // right
+	if c == '1' { // right
 		if st.head == len(st.data)-1 {
 			st.data = st.data + zeroes(st.data)
 		}
@@ -64,7 +71,7 @@ func zeroes(s string) string {
 
 func validInput(data string) error {
 	for i, c := range data {
-		if int(c)-'0' != 0 && int(c)-'0' != 1 {
+		if int(c) != '0' && int(c) != '1' {
 			return errors.Wrapf(ErrInvalid, "Invalid character %c in position %d", c, i)
 		}
 	}

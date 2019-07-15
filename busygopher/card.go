@@ -1,16 +1,14 @@
 package busygopher
 
-type Card struct {
-	Ops [2]Op
-}
+import "strings"
 
-type MapDeck map[int]Card
+type MapDeck map[string]*Op
 
-func (md MapDeck) Card(i int) [2]Op {
-	return md[i].Ops
+func (md MapDeck) Card(state rune, input rune) *Op {
+	return md[string(state)+string(input)]
 }
 func NewDeck(n int) MapDeck {
-	m := [7]map[string]string{
+	programs := [7]map[string]string{
 		{},
 
 		{"a0": "h1r"},
@@ -41,4 +39,22 @@ func NewDeck(n int) MapDeck {
 			"f0": "e1l", "f1": "h1r"},
 	}
 
+	deck := make(MapDeck)
+
+	for state, action := range programs[n] {
+		deck[state] = actionToOp(action)
+	}
+	return deck
+}
+
+func actionToOp(action string) *Op {
+	act := strings.Split(action, "")
+	op := &Op{
+		Next:  []rune(act[0])[0],
+		Write: []rune(act[1])[0],
+	}
+	if len(act) > 2 {
+		op.Move = []rune(act[2])[0]
+	}
+	return op
 }
