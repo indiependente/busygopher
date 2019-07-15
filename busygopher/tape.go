@@ -19,11 +19,8 @@ type StringTape struct {
 	data string
 }
 
-func NewStringTape(data string) (*StringTape, error) {
-	err := validInput(data)
-	if err != nil {
-		return nil, errors.Wrap(err, "Could not instantiate StringTape")
-	}
+func NewStringTape() (*StringTape, error) {
+	data := "0000000000"
 	return &StringTape{
 		head: len(data) / 2,
 		data: data,
@@ -40,14 +37,29 @@ func (st *StringTape) WriteHead(c int) {
 	st.data = string(copy)
 }
 func (st *StringTape) MoveHead(c int) {
-	if c == 0 {
+	if c == 0 { // left
+		if st.head == 0 {
+			st.data = zeroes(st.data) + st.data
+			st.head = len(st.data)
+		}
 		st.head--
 		return
 	}
-	if c == 1 {
+	if c == 1 { // right
+		if st.head == len(st.data)-1 {
+			st.data = st.data + zeroes(st.data)
+		}
 		st.head++
 		return
 	}
+}
+
+func zeroes(s string) string {
+	copy := ""
+	for i := 0; i < len(s); i++ {
+		copy += "0"
+	}
+	return copy
 }
 
 func validInput(data string) error {

@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	tape, err := busygopher.NewStringTape("0000000000")
+	tape, err := busygopher.NewStringTape()
 	if err != nil {
 		log.Fatalf("Error while creating tape: %v", err)
 	}
