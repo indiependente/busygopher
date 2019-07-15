@@ -44,7 +44,7 @@ func (st *StringTape) WriteHead(c rune) {
 }
 
 func (st *StringTape) MoveHead(c rune) {
-	if c == '0' { // left
+	if c == 'l' { // left
 		if st.head == 0 {
 			st.data = zeroes(st.data) + st.data
 			st.head = len(st.data)
@@ -52,7 +52,7 @@ func (st *StringTape) MoveHead(c rune) {
 		st.head--
 		return
 	}
-	if c == '1' { // right
+	if c == 'r' { // right
 		if st.head == len(st.data)-1 {
 			st.data = st.data + zeroes(st.data)
 		}

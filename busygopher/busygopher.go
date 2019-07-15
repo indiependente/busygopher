@@ -30,13 +30,14 @@ type BusyGopher struct {
 
 func (bg *BusyGopher) Step() {
 	op := bg.Cards.Card(bg.State, bg.Tape.ReadHead())
+	bg.Tape.WriteHead(op.Write)
+	bg.Tape.MoveHead(op.Move)
+	bg.State = op.Next
 	if op.Next == HALT {
 		bg.Halted = true
 		return // stop execution
 	}
-	bg.Tape.WriteHead(op.Write)
-	bg.Tape.MoveHead(op.Move)
-	bg.State = op.Next
+
 }
 
 func (bg *BusyGopher) String() string {

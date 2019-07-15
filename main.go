@@ -1,18 +1,20 @@
 package main
 
 import (
+	"flag"
 	"log"
 
 	"github.com/indiependente/busygopher/busygopher"
 )
 
 func main() {
-	N := 1
+	N := flag.Int("states", 2, "the number of states the machine can assume")
+	flag.Parse()
 	tape, err := busygopher.NewStringTape()
 	if err != nil {
 		log.Fatalf("Error while creating tape: %v", err)
 	}
-	deck := busygopher.NewDeck(N)
+	deck := busygopher.NewDeck(*N)
 	bg := &busygopher.BusyGopher{
 		Tape:  tape,
 		Cards: deck,
